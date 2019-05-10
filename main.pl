@@ -80,6 +80,34 @@ vizinho(rio_grande_do_norte, ceara).
 vizinho(ceara, piaui).
 vizinho(piaui, maranhao).
 
+capital(acre, rio_branco).
+capital(alagoas, maceio).
+capital(amapa, macapa).
+capital(amazonas, manaus).
+capital(bahia, salvador).
+capital(ceara, fortaleza).
+capital(distrito_federal, brasilia).
+capital(espirito_santo, vitoria).
+capital(goias, goiania).
+capital(maranhao, sao_luis).
+capital(mato_grosso, cuiaba).
+capital(mato_grosso_do_sul, campo_grande).
+capital(minas_gerais, belo_horizonte).
+capital(para, belem).
+capital(paraiba, joao_pessoa).
+capital(parana, curitiba).
+capital(pernambuco, recife).
+capital(piaui, teresina).
+capital(rio_de_janeiro, rio_de_janeiro).
+capital(rio_grande_do_norte, natal).
+capital(rio_grande_do_sul, porto_alegre).
+capital(rondonia, porto_velho).
+capital(roraima, boa_vista).
+capital(santa_catarina, florianopolis).
+capital(sao_paulo, sao_paulo).
+capital(sergipe, aracaju).
+capital(tocantins, palmas).
+
 eh_vizinho(X,Y) :- (vizinho(X,Y);vizinho(Y,X)).
 
 vizinhos :-
@@ -121,15 +149,24 @@ another(Obj, Obj_name, Inicial) :-
     estado(Spawn, X),
     \+(X = Obj),\+(eh_vizinho(Spawn, Obj_name)) -> Inicial is X; another(Obj, Obj_name, Inicial).
 
-
 venceu :-
     objetivo(you, Obj),
     posicao(you, Pos),
     \+(Pos = Obj) -> nl ; nl,nl,write('Parabens vc chegou ao destino!!'),nl.
 
+verificar_capital(Dest) :-
+    read(Capital),
+    capital(Dest, Dest_cap),
+    Capital = Dest_cap -> nl,write('Resposta correta.'),nl;
+    write('Resposta incorreta, tente novamente:'),nl,
+    verificar_capital(Dest).
+
 viajar(Dest) :-
     posicao(you, Atual),
-    eh_vizinho(Dest, Atual),
+    eh_vizinho(Dest, Atual),nl,
+    write('Para viajar precisa digitar o nome da capital do estado '),
+    write(Dest),nl,
+    verificar_capital(Dest),
     retract(posicao(you, Atual)),
     assert(posicao(you, Dest)),
     write('Voce esta no estado '),
