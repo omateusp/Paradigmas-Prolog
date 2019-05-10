@@ -1,8 +1,8 @@
 # RPG e Jogo da Viagem em PROLOG
 
 ## Integrantes do grupo
-Lucas Kishima            16/0133581
-Mateus Oliveira Patrício 16/0015006
+Lucas Kishima            16/0133581  
+Mateus Oliveira Patrício 16/0015006  
 William Almeida          16/0020280
 
 ## Descrição
