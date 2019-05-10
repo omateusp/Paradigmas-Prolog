@@ -82,9 +82,10 @@ vizinho(piaui, maranhao).
 
 eh_vizinho(X,Y) :- (vizinho(X,Y);vizinho(Y,X)).
 
-vizinhos(Y) :-
+vizinhos :-
     posicao(you, Atual),
-    (findall(X,eh_vizinho(Atual,X),Y)).
+    (findall(X,eh_vizinho(Atual,X),Vizinhos)),
+    write(Vizinhos).
 
 posicao_atual :-
     posicao(you, Atual),
@@ -104,22 +105,27 @@ game_start :-
     write(X), nl,nl,
     write('Regras: voce so pode viajar entre estados vizinhos.'),nl,nl,
     write('Comandos:'),nl,
-    write('viajar(Destino) -- permite ao jogador viajar para um estado vizinho.'),nl,
-    write('eh_vizinho(X, Y) -- permite verificar todos os vizinhos de um estado.'),nl,
-    write('vizinhos(Y) -- pesquisa os vizinhos atuais.'),nl,
-    write('destino -- verifica o estado de destino.'),nl,
-    write('posicao_atual -- verifica a posicao atual.'),nl,nl,
+    write('viajar(Destino). -- permite ao jogador viajar para um estado vizinho.'),nl,
+    write('eh_vizinho(X, Y). -- permite verificar todos os vizinhos de um estado.'),nl,
+    write('vizinhos. -- pesquisa os vizinhos atuais.'),nl,
+    write('destino. -- verifica o estado de destino.'),nl,
+    write('posicao_atual. -- verifica a posicao atual.'),nl,nl,
 	write('Voce iniciara sua viagem no estado: '),
-    random(0, 27, Inicial),
+    another(Obj, X, Inicial),
     estado(Y, Inicial),
     assert(posicao(you, Y)),
     write(Y),nl.
 
+another(Obj, Obj_name, Inicial) :-
+    random(0, 27, X),
+    estado(Spawn, X),
+    \+(X = Obj),\+(eh_vizinho(Spawn, Obj_name)) -> Inicial is X; another(Obj, Obj_name, Inicial).
+
+
 venceu :-
     objetivo(you, Obj),
     posicao(you, Pos),
-    Pos = Obj,nl,
-    write('Parabens vc venceu!!'),!.
+    \+(Pos = Obj) -> nl ; nl,nl,write('Parabens vc chegou ao destino!!'),nl.
 
 viajar(Dest) :-
     posicao(you, Atual),
@@ -129,4 +135,4 @@ viajar(Dest) :-
     write('Voce esta no estado '),
     write(Dest),
     write(' agora.'),nl,
-    \+venceu.
+    venceu.
