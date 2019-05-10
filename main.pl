@@ -1,5 +1,3 @@
-%game_start(1) :- write('Obrigado por jogar o jogo'), nl, !.
-
 game_start :-	write('Bem vindo ao jogo'), nl,
     random(0,3,Mapn),
 	write('O seu objetivo no jogo e achar a chave e entrar no castelo para salvar a princesa, voce esta atualmente em um(a) '),
@@ -19,17 +17,28 @@ game_start :-	write('Bem vindo ao jogo'), nl,
     (Y = Alternative ; Z = Alternative),
     go_to(Alternative).
 
-%game_start(2) :- play.
+player_status(vida, 100).
+player_status(experiencia, 0).
+player_status(level, 1).
 
 map_list(praia, 0).
 map_list(floresta, 1).
 map_list(caverna, 2).
 map_list(castelo, 3).
 
-%reward().
+reward(0) :-
+    write('Voce encontrou uma banana, recuperou 10 de vida.'), nl,
+    player_status(vida, X),
+    R is X + 10,
+    dynamic(player_status/2),
+    retract(player_status(vida, X)),
+    assert(player_status(vida, R)),
+    compile_predicates([player_status/2]).
 %reward().
 
 go_to(praia) :-
+    %random(0,10, R),
+    reward(0),
     beach_art.
 
 beach_art :-
